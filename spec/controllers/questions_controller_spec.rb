@@ -8,7 +8,7 @@ RSpec.describe QuestionsController, type: :controller do
       it 'saves a new question in the database' do
         expect do
           post :create, params: { question: attributes_for(:question) }
-        end.to change(Question, :count)
+        end.to change(Question, :count).by(1)
       end
 
       it 'redirects to show view' do
