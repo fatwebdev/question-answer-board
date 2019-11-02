@@ -1,6 +1,5 @@
 class AnswersController < ApplicationController
-  # expose :answers, from: :question
-  expose :answer, build: ->(answer_params, _scope){ question.answers.new(answer_params) }
+  expose :answer, build: ->(answer_params, _scope) { question.answers.new(answer_params) }
 
   def create
     if answer.save
