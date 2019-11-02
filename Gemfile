@@ -29,7 +29,10 @@ gem 'jbuilder', '~> 2.7'
 gem 'bootsnap', '>= 1.4.2', require: false
 
 # templating
-gem "slim-rails"
+gem 'slim-rails'
+
+# helper for creating controller crud actions
+gem 'decent_exposure', '3.0.0'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
