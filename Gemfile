@@ -56,7 +56,7 @@ group :test do
 end
 
 group :development, :test do
-  gem 'rspec-rails', '~> 3.8'
+  gem 'rspec-rails', git: 'https://github.com/rspec/rspec-rails', tag: 'v4.0.0.beta3'
   gem 'factory_bot_rails'
 end
 
