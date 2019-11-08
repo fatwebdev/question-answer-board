@@ -48,6 +48,8 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'guard'
   gem 'guard-rspec', require: false
+  gem 'launchy'
+  gem 'dev_log_in'
 end
 
 group :test do
