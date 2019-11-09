@@ -1,7 +1,4 @@
 FactoryBot.define do
-  sequence(:title) { |n| "Question #{n} title" }
-  sequence(:body) { |n| "Body #{n}" }
-
   factory :question do
     title { 'MyString' }
     body { 'MyText' }
@@ -11,8 +8,8 @@ FactoryBot.define do
     end
 
     trait :dynamic do
-      title
-      body
+      sequence(:title) { |n| "Question #{n} title" }
+      sequence(:body) { |n| "Question #{n} body" }
     end
   end
 end
