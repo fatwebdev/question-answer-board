@@ -1,2 +1,8 @@
 p = question.title
 p = question.body
+
+ul
+  - answers.each do |answer|
+    li = answer.body
+
+= render 'answers/form'

@@ -26,10 +26,10 @@ RSpec.describe AnswersController, type: :controller do
         end.to_not change(question.answers, :count)
       end
 
-      it 're-render new view' do
+      it 're-render show question view' do
         post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid) }
 
-        expect(response).to render_template :new
+        expect(response).to render_template 'questions/show'
       end
     end
   end

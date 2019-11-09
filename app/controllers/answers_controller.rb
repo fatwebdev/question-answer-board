@@ -1,12 +1,13 @@
 class AnswersController < ApplicationController
   expose :question, -> { Question.find(params[:question_id]) }
-  expose :answer, build: ->(answer_params, _scope) { question.answers.new(answer_params) }
+  expose :answers, -> { question.answers }
+  expose :answer, build: ->(params, _scope) { answers.new(params) }
 
   def create
     if answer.save
-      redirect_to answer.question
+      redirect_to answer.question, notice: 'Answer create successfully'
     else
-      render :new
+      render 'questions/show'
     end
   end
 
