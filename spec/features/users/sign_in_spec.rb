@@ -5,7 +5,7 @@ feature 'User can sign in', '
   As an unauthenticated user
   I\'d like to be able to sign in
 ' do
-  given!(:user) { User.create!(email: 'user@test.com', password: '12345678') }
+  given!(:user) { create(:user) }
 
   background do
     visit root_path
@@ -13,8 +13,8 @@ feature 'User can sign in', '
   end
 
   scenario 'Registered user tries to sign in' do
-    fill_in 'Email', with: 'user@test.com'
-    fill_in 'Password', with: '12345678'
+    fill_in 'Email', with: user.email
+    fill_in 'Password', with: user.password
     click_on 'Log in'
 
     expect(page).to have_content 'Signed in successfully'
