@@ -2,6 +2,9 @@ require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
   let(:question) { create(:question) }
+  let(:user) { create(:user) }
+
+  before { login(user) }
 
   describe 'POST #create' do
     context 'with valid attributes' do
@@ -29,6 +32,16 @@ RSpec.describe QuestionsController, type: :controller do
         post :create, params: { question: attributes_for(:question, :invalid) }
 
         expect(response).to render_template :new
+      end
+    end
+
+    context 'unauthenticate user' do
+      before { sign_out(user) }
+
+      it 'try saves a new question in the database' do
+        expect do
+          post :create, params: { question: attributes_for(:question) }
+        end.to_not change(Question, :count)
       end
     end
   end
