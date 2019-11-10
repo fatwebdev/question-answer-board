@@ -2,7 +2,8 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!, only: %i[new create]
 
   expose :questions, -> { Question.all }
-  expose :question
+  expose :question,
+        build: ->(params, _scope) { current_user.questions.new(params) }
   expose :answers, -> { question.answers }
   expose :answer, -> { question.answers.new }
 

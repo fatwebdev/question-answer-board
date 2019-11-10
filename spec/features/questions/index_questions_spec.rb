@@ -5,8 +5,10 @@ feature 'Show all questions', '
   As a simple user
   I want to go to the page with questions
 ' do
+  given(:user) { create(:user) }
+
   scenario 'Index questions' do
-    questions = create_list(:question, 5, :dynamic)
+    questions = create_list(:question, 5, :dynamic, user: user)
 
     visit questions_path
 

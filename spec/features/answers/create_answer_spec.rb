@@ -6,7 +6,7 @@ feature 'Create answer', '
   I want to be able to create answer
 ' do
   given(:user) { create(:user) }
-  given(:question) { create(:question) }
+  given(:question) { create(:question, user: user) }
 
   background do
     login_as(user)
@@ -38,7 +38,8 @@ feature 'Can\'t create answer', '
   As an unauthenticate user
   I want to be not able create answer
 ' do
-  given(:question) { create(:question) }
+  given(:user) { create(:user) }
+  given(:question) { create(:question, user: user) }
 
   background { visit question_path(question) }
 

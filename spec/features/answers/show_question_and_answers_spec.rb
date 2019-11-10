@@ -5,8 +5,9 @@ feature 'Show question and relative answers', '
   As a simple user
   I want to go to the question page
 ' do
-  given(:question) { create(:question) }
-  given!(:answers) { create_list(:answer, 5, :dynamic, question: question) }
+  given(:user) { create(:user) }
+  given(:question) { create(:question, user: user) }
+  given!(:answers) { create_list(:answer, 5, :dynamic, question: question, user: user) }
 
   scenario 'Show question with answers' do
     visit question_path(question)
