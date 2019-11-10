@@ -5,9 +5,11 @@ feature 'Create answer', '
   As a simple user
   I want to be able to create answer
 ' do
+  given(:user) { create(:user) }
   given(:question) { create(:question) }
 
   background do
+    login_as(user)
     visit question_path(question)
   end
 
@@ -28,5 +30,19 @@ feature 'Create answer', '
     expect(page).to have_content "Body can't be blank"
     expect(page).to have_content question.title
     expect(page).to have_content question.body
+  end
+end
+
+feature 'Can\'t create answer', '
+  In order to be dont able to give answer
+  As an unauthenticate user
+  I want to be not able create answer
+' do
+  given(:question) { create(:question) }
+
+  background { visit question_path(question) }
+
+  scenario 'Can\'t click create answer button' do
+    expect(page).to_not have_selector(:link_or_button, 'Create Answer')
   end
 end

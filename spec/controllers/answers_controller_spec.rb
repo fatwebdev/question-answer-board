@@ -3,6 +3,9 @@ require 'rails_helper'
 RSpec.describe AnswersController, type: :controller do
   let(:question) { create(:question) }
   let(:answer) { create(:answer, question: question) }
+  let(:user) { create(:user) }
+
+  before { login(user) }
 
   describe 'POST #create' do
     context 'with valid attributes' do
@@ -30,6 +33,16 @@ RSpec.describe AnswersController, type: :controller do
         post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid) }
 
         expect(response).to render_template 'questions/show'
+      end
+    end
+
+    context 'unathenticate user' do
+      before { sign_out(user) }
+
+      it 'try saves a new answer in the database' do
+        expect do
+          post :create, params: { question_id: question, answer: attributes_for(:answer) }
+        end.to_not change(question.answers, :count)
       end
     end
   end

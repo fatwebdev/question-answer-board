@@ -1,4 +1,6 @@
 class AnswersController < ApplicationController
+  before_action :authenticate_user!, only: %i[new create]
+
   expose :question, -> { Question.find(params[:question_id]) }
   expose :answers, -> { question.answers }
   expose :answer, build: ->(params, _scope) { answers.new(params) }

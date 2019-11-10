@@ -5,4 +5,5 @@ ul
   - answers.each do |answer|
     li = answer.body
 
-= render 'answers/form'
+- if user_signed_in?
+  = render 'answers/form'
