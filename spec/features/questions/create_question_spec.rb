@@ -42,7 +42,7 @@ feature 'Can\'t create questions', '
   background { visit root_path }
 
   scenario 'Can\'t click create question button' do
-    expect(page).to_not have_content 'Ask question'
+    expect(page).to_not have_selector(:link_or_button, 'Ask question')
   end
 
   scenario 'Can\'t visit create question path' do
