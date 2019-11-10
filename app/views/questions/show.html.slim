@@ -6,7 +6,10 @@ p = question.body
 
 ul
   - answers.each do |answer|
-    li = answer.body
+    li
+      = answer.body
+      - if current_user&.author_of?(answer) && answer.valid?
+        = link_to 'Delete Answer', answer_path(answer), method: :delete
 
 - if user_signed_in?
   = render 'answers/form'

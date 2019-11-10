@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 class AnswersController < ApplicationController
-  before_action :authenticate_user!, only: %i[new create]
+  before_action :authenticate_user!, only: %i[new create destroy]
 
   expose :question, -> { Question.find(params[:question_id]) }
   expose :answers, -> { question.answers }
@@ -24,7 +24,12 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    answer.destroy
+    if current_user.author_of?(answer)
+      answer.destroy
+      flash[:notice] = 'Answer delete successfully'
+    else
+      flash[:alert] = "You can not delete someone else's answer"
+    end
     redirect_to answer.question
   end
 
