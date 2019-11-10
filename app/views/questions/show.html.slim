@@ -1,6 +1,9 @@
 p = question.title
 p = question.body
 
+- if current_user&.author_of?(question)
+  = link_to 'Delete Question', question_path(question), method: :delete
+
 ul
   - answers.each do |answer|
     li = answer.body

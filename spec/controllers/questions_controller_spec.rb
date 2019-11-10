@@ -79,6 +79,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
+    let(:user2) { create(:user) }
     let!(:question) { create(:question, user: user) }
 
     it 'delete the question' do
@@ -91,6 +92,16 @@ RSpec.describe QuestionsController, type: :controller do
       delete :destroy, params: { id: question }
 
       expect(response).to redirect_to questions_path
+    end
+
+    context 'user tries to remove not its question' do
+      before { login(user2) }
+
+      it 'delete the question' do
+        expect do
+          delete :destroy, params: { id: question }
+        end.to_not change(Question, :count)
+      end
     end
   end
 end
