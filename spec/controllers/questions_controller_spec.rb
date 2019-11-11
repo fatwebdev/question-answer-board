@@ -11,7 +11,7 @@ RSpec.describe QuestionsController, type: :controller do
     before { login(author) }
 
     context 'with valid attributes' do
-      it 'saves a new question in the database' do
+      it 'saves a new question' do
         expect { subject }.to change(Question, :count).by(1)
       end
 
@@ -23,23 +23,23 @@ RSpec.describe QuestionsController, type: :controller do
     context 'with invalid attributes' do
       let(:params) { { question: attributes_for(:question, :invalid) } }
 
-      it 'does not save the question' do
+      it 'does not save a new question' do
         expect { subject }.to_not change(Question, :count)
       end
 
-      it 're-render new view' do
+      it 're-renders new view' do
         expect(subject).to render_template :new
       end
     end
 
-    context 'unauthenticate user' do
+    context 'as not authenticated user' do
       before { sign_out(author) }
 
-      it 'try saves a new question in the database' do
+      it 'does not saves a new question' do
         expect { subject }.to_not change(Question, :count)
       end
 
-      it 'redirect to sign in' do
+      it 'redirects to sign in' do
         expect(subject).to redirect_to new_user_session_path
       end
     end
@@ -84,36 +84,36 @@ RSpec.describe QuestionsController, type: :controller do
     let!(:question) { create(:question, user: author) }
     subject { delete :destroy, params: { id: question } }
 
-    context 'author tries to remove its question' do
+    context 'as author' do
       before { login(author) }
 
-      it 'delete the question' do
+      it 'deletes the question' do
         expect { subject }.to change(Question, :count).by(-1)
       end
 
-      it 'redirect to index' do
+      it 'redirects to index' do
         expect(subject).to redirect_to questions_path
       end
     end
 
-    context 'user tries to remove not its question' do
+    context 'as user' do
       before { login(user) }
 
-      it 'delete the question' do
+      it 'does not delete the question' do
         expect { subject }.to_not change(Question, :count)
       end
 
-      it 'redirect to index' do
+      it 'redirects to index' do
         expect(subject).to redirect_to questions_path
       end
     end
 
-    context 'unauthenticate user tries to remove question' do
-      it 'delete the question' do
+    context 'as not authenticated user' do
+      it 'does not delete the question' do
         expect { subject }.to_not change(Question, :count)
       end
 
-      it 'redirect to sign in' do
+      it 'redirects to sign in' do
         expect(subject).to redirect_to new_user_session_path
       end
     end
