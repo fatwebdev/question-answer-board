@@ -8,7 +8,7 @@ feature 'Show all questions', '
   given(:user) { create(:user) }
 
   scenario 'Index questions' do
-    questions = create_list(:question, 5, :dynamic, user: user)
+    questions = create_list(:question, 5, user: user)
 
     visit questions_path
 

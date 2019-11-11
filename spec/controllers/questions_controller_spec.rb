@@ -47,9 +47,15 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #update' do
+    let(:params) { {} }
+
+    subject { patch :update, params: { id: question, question: params } }
+
     context 'with valid attributes' do
+      let(:params) { { title: 'new title', body: 'new body' } }
+
       it 'changes question attributes' do
-        patch :update, params: { id: question, question: { title: 'new title', body: 'new body' }}
+        subject
         question.reload
 
         expect(question.title).to eq 'new title'
@@ -57,23 +63,23 @@ RSpec.describe QuestionsController, type: :controller do
       end
 
       it 'redirects to updated question' do
-        patch :update, params: { id: question, question: attributes_for(:question) }
-
-        expect(response).to redirect_to question
+        expect(subject).to redirect_to question
       end
     end
 
     context 'with invalid attributes' do
-      before { patch :update, params: { id: question, question: attributes_for(:question, :invalid)} }
-      it 'does not change question attributes' do
-        question.reload
+      let(:params) { attributes_for(:question, :invalid) }
 
-        expect(question.title).to eq 'MyString'
-        expect(question.body).to eq 'MyText'
+      it 'does not change question attributes' do
+        expect do
+          subject
+          question.reload
+        end.to not_change(question, :title)
+          .and not_change(question, :body)
       end
 
       it 're-renders edit view' do
-        expect(response).to render_template :edit
+        expect(subject).to render_template :edit
       end
     end
   end
