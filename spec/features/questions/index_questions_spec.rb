@@ -6,14 +6,13 @@ feature 'Show all questions', '
   I want to go to the page with questions
 ' do
   given(:user) { create(:user) }
+  given!(:questions) { create_list(:question, 5, user: user) }
 
   scenario 'Index questions' do
-    questions = create_list(:question, 5, user: user)
-
     visit questions_path
 
-    questions.each do |q|
-      expect(page).to have_content q.title
+    questions.each do |question|
+      expect(page).to have_content question.title
     end
   end
 end
