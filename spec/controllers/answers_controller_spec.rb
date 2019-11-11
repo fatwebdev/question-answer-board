@@ -48,31 +48,34 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATCH #update' do
+    let(:params) { { body: 'new body' } }
+    subject { patch :update, params: { id: answer, answer: params } }
+
     context 'with valid attributes' do
       it 'changes answer attributes' do
-        patch :update, params: { id: answer, answer: { body: 'new body' }}
+        subject
         answer.reload
 
         expect(answer.body).to eq 'new body'
       end
 
       it 'redirects to updated answer' do
-        patch :update, params: { id: answer, answer: attributes_for(:answer) }
-
-        expect(response).to redirect_to answer
+        expect(subject).to redirect_to answer
       end
     end
 
     context 'with invalid attributes' do
-      before { patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid)} }
-      it 'does not change answer attributes' do
-        answer.reload
+      let(:params) { attributes_for(:answer, :invalid) }
 
-        expect(answer.body).to eq 'MyText'
+      it 'does not change answer attributes' do
+        expect do
+          subject
+          answer.reload
+        end.to_not change(answer, :body)
       end
 
       it 're-renders edit view' do
-        expect(response).to render_template :edit
+        expect(subject).to render_template :edit
       end
     end
   end

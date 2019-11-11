@@ -7,7 +7,7 @@ feature 'Show question and relative answers', '
 ' do
   given(:user) { create(:user) }
   given(:question) { create(:question, user: user) }
-  given!(:answers) { create_list(:answer, 5, :dynamic, question: question, user: user) }
+  given!(:answers) { create_list(:answer, 5, question: question, user: user) }
 
   scenario 'Show question with answers' do
     visit question_path(question)
