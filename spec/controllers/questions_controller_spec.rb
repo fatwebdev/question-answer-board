@@ -2,13 +2,13 @@ require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
   let(:user) { create(:user) }
-  let(:question) { create(:question, user: user) }
-
-  before { login(user) }
+  let(:author) { create(:user) }
+  let(:question) { create(:question, user: author) }
 
   describe 'POST #create' do
     let(:params) { { question: attributes_for(:question) } }
     subject { post :create, params: params }
+    before { login(author) }
 
     context 'with valid attributes' do
       it 'saves a new question in the database' do
@@ -33,10 +33,14 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'unauthenticate user' do
-      before { sign_out(user) }
+      before { sign_out(author) }
 
       it 'try saves a new question in the database' do
         expect { subject }.to_not change(Question, :count)
+      end
+
+      it 'redirect to sign in' do
+        expect(subject).to redirect_to new_user_session_path
       end
     end
   end
@@ -77,24 +81,40 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    let(:user2) { create(:user) }
-    let!(:question) { create(:question, user: user) }
-
+    let!(:question) { create(:question, user: author) }
     subject { delete :destroy, params: { id: question } }
 
-    it 'delete the question' do
-      expect { subject }.to change(Question, :count).by(-1)
-    end
+    context 'author tries to remove its question' do
+      before { login(author) }
 
-    it 'redirect to index' do
-      expect(subject).to redirect_to questions_path
+      it 'delete the question' do
+        expect { subject }.to change(Question, :count).by(-1)
+      end
+
+      it 'redirect to index' do
+        expect(subject).to redirect_to questions_path
+      end
     end
 
     context 'user tries to remove not its question' do
-      before { login(user2) }
+      before { login(user) }
 
       it 'delete the question' do
         expect { subject }.to_not change(Question, :count)
+      end
+
+      it 'redirect to index' do
+        expect(subject).to redirect_to questions_path
+      end
+    end
+
+    context 'unauthenticate user tries to remove question' do
+      it 'delete the question' do
+        expect { subject }.to_not change(Question, :count)
+      end
+
+      it 'redirect to sign in' do
+        expect(subject).to redirect_to new_user_session_path
       end
     end
   end
