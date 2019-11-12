@@ -37,6 +37,6 @@ feature 'Don\'t delete answer', "
     login_as(user)
     visit question_path(question)
 
-    expect(page).to_not have_content 'Delete Answer'
+    expect(page).to_not have_selector(:link_or_button, 'Delete Answer')
   end
 end

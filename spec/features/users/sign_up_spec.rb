@@ -39,7 +39,7 @@ feature 'User can sign up', '
     end
 
     scenario 'does not able to sign up' do
-      expect(page).to_not have_content 'Sign Up'
+      expect(page).to_not have_selector(:link_or_button, 'Sign Up')
       visit new_user_registration_path
       expect(page).to have_content 'You are already signed in.'
     end
