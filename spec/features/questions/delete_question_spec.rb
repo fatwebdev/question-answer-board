@@ -32,6 +32,6 @@ feature 'Don\'t delete question', "
     login_as(user)
     visit question_path(question)
 
-    expect(page).to_not have_selector(:link_or_button, 'Delete Question')
+    expect(page).to_not have_content 'Delete Question'
   end
 end

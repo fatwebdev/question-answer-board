@@ -44,6 +44,6 @@ feature 'Can\'t create answer', '
   background { visit question_path(question) }
 
   scenario 'Can\'t click create answer button' do
-    expect(page).to_not have_selector(:link_or_button, 'Create Answer')
+    expect(page).to_not have_content 'Create Answer'
   end
 end
