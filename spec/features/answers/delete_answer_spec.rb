@@ -13,9 +13,12 @@ feature 'Delete answer', '
     login_as(author)
     visit question_path(question)
 
+    expect(page).to have_content answer.body
+
     click_on 'Delete Answer'
 
     expect(page).to have_content 'Answer delete successfully'
+    expect(page).to_not have_content answer.body
     expect(current_path).to eql question_path(question)
   end
 end
