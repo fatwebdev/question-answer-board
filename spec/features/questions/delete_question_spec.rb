@@ -6,15 +6,19 @@ feature 'Delete question', '
   I want to be able to delete question
 ' do
   given(:author) { create(:user) }
-  given(:question) { create(:question, user: author) }
+  given!(:question) { create(:question, user: author) }
 
   scenario 'delete a question' do
     login_as(author)
-    visit question_path(question)
 
+    visit questions_path
+
+    expect(page).to have_content question.title
+    click_on question.title
     click_on 'Delete Question'
 
     expect(page).to have_content 'Question delete successfully'
+    expect(page).to_not have_content question.title
     expect(current_path).to eql questions_path
   end
 end
