@@ -5,15 +5,24 @@ feature 'User can sign out', '
   As an authenticated user
   I\'d like to be able to sign out
 ' do
-  background do
-    user = create(:user)
-    login_as(user)
-    visit root_path
+  given(:user) { create(:user) }
+
+  context 'as authorized user' do
+    scenario 'tries to sign out' do
+      login_as(user)
+      visit root_path
+
+      expect(page).to have_content 'Sign Out'
+      click_on 'Sign Out'
+      expect(page).to have_content 'Signed out successfully.'
+    end
   end
 
-  scenario 'User tries to sign out' do
-    expect(page).to have_content 'Sign Out'
-    click_on 'Sign Out'
-    expect(page).to have_content 'Signed out successfully.'
+  context 'as not authorized user' do
+    scenario 'does not able to sign out' do
+      visit root_path
+
+      expect(page).to_not have_content 'Sign Out'
+    end
   end
 end
