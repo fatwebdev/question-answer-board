@@ -3,9 +3,9 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!, only: %i[new create destroy]
 
   expose :question, -> { Question.find(params[:question_id]) }
-  expose :answers, -> { question.answers }
+  expose :answers, -> { question.answers.reject(&:new_record?) }
   expose :answer,
-         build: ->(params, _scope) { answers.new(params.merge(user_id: current_user.id)) }
+         build: ->(params, _scope) { question.answers.new(params.merge(user_id: current_user.id)) }
 
   def create
     if answer.save
