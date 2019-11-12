@@ -11,8 +11,13 @@ RSpec.describe User, type: :model do
   let(:user) { create(:user) }
   let(:question) { create(:question, user: author) }
 
-  it 'check author of resource' do
-    expect(author.author_of?(question)).to be_truthy
-    expect(user.author_of?(question)).to be_falsey
+  context 'check author of resource' do
+    it 'as an author' do
+      expect(author.author_of?(question)).to eq true
+    end
+
+    it 'as not an author' do
+      expect(user.author_of?(question)).to eq false
+    end
   end
 end
