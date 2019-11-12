@@ -17,7 +17,7 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       it 'redirects to show questions view' do
-        expect(subject).to redirect_to controller.answer.question
+        expect(subject).to redirect_to question
       end
     end
 
@@ -25,7 +25,7 @@ RSpec.describe AnswersController, type: :controller do
       let(:params) { { question_id: question, answer: attributes_for(:answer, :invalid) } }
 
       it 'does not save a new question answer' do
-        expect { subject }.to_not change(question.answers, :count)
+        expect { subject }.to_not change(Answer, :count)
       end
 
       it 're-renders show question view' do
@@ -37,7 +37,7 @@ RSpec.describe AnswersController, type: :controller do
       before { sign_out(user) }
 
       it 'does not saves a new question answer' do
-        expect { subject }.to_not change(question.answers, :count)
+        expect { subject }.to_not change(Answer, :count)
       end
 
       it 'redirects to sign in' do
