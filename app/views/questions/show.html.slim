@@ -1,0 +1,11 @@
+p = question.title
+p = question.body
+
+- if current_user&.author_of?(question)
+  = link_to 'Delete Question', question_path(question), method: :delete
+
+ul
+  = render answers
+
+- if user_signed_in?
+  = render 'answers/form'

@@ -1,0 +1,12 @@
+
+= render "shared/errors", entity: question
+
+= form_with model: question, local: true do |f|
+  p
+    = f.label :title
+    = f.text_field :title
+  p
+    = f.label :body
+    = f.text_area :body, size: "60x12"
+  p
+    = f.submit 'Create Question'
